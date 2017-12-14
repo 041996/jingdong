@@ -1,0 +1,136 @@
+<!-- 引入头部 -->
+<% include ../header %>
+    
+<div class="main-content">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+
+            <li>
+                <a href="#">用户模块</a>
+            </li>
+            <li class="active">修改用户</li>
+        </ul><!-- .breadcrumb -->
+
+        <div class="nav-search" id="nav-search">
+            <form class="form-search">
+                <span class="input-icon">
+                    <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                    <i class="icon-search nav-search-icon"></i>
+                </span>
+            </form>
+        </div><!-- #nav-search -->
+    </div>
+
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                用户模块
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    修改用户
+                </small>
+            </h1>
+        </div><!-- /.page-header -->
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <% if(errMsg.length){ %>
+                    <p class="alert alert-danger"><%= errMsg %></p>
+                <% } %>
+                <% if(sucMsg.length){ %> 
+                    <div class="alert alert-success">
+                        <%= sucMsg %>
+                    </div>
+
+                <% } %>
+                <form class="form-horizontal" action="/admin/userDoedit" method="post" enctype="multipart/form-data">
+                    <!-- 使用隐藏域传递_id的值 -->
+                    <input type="hidden" name="_id" value="<%= user._id %>">
+                    <div class="form-group">
+                        <label class="col-md-1 control-label" for="userpic">头像：</label>
+                        <div class="col-md-4">
+                            <input class="input-xlarge" id="userpic" name="upic" size="30" type="file">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">账户：</label>
+                        <div class="col-md-4">
+                            <input type="text" name="uname" readonly class="form-control" value="<%= user.uname %>">
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="col-md-1 control-label">等级：</label>
+                        <div class="col-md-4">
+                            <select name="level" id="">
+                                <option value="0" <%= user.level==0?'selected':'' %> >普通会员</option>
+                                <option value="1" <%= user.level==1?'selected':'' %> >管理员</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">邮箱：</label>
+                        <div class="col-md-4">
+                            <input type="email" name="email" class="form-control" value="<%= user.email %>">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">性别：</label>
+                        <div class="col-md-4">
+                            <label class="radio-inline">
+                                <input type="radio" <%= user.sex==1?'checked':'' %> name="sex" value="1"> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" <%= user.sex==2?'checked':'' %> name="sex" value="2"> 女
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" <%= user.sex==3?'checked':'' %> name="sex" value="3"> 保密
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">年龄：</label>
+                        <div class="col-md-4">
+                            <input type="number" name="age" min="1" class="form-control" value="<%= user.age %>">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">金币：</label>
+                        <div class="col-md-4">
+                            <input type="text" name="gold" class="form-control" value="<%= user.gold %>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">手机：</label>
+                        <div class="col-md-4">
+                            <input type="text" name="phone" class="form-control" value="<%= user.phone %>">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-1 col-md-4">
+                            <button class="btn btn-success">保存</button>
+                            <input type="reset" class="btn btn-danger" value="清空数据">
+                        </div>
+                    </div>
+                </form>
+
+                
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+</div><!-- /.main-content -->
+
+<!-- 引入底部 -->
+<% include ../footer %>

@@ -1,0 +1,130 @@
+<!-- 加载头部 -->
+<% include header %>
+
+<div id="main">
+    <% include sidebar %>
+    <div id="content">
+        <div class="panel">
+            <div class="header">
+                <ul class="breadcrumb">
+                    <li><a href="/">主页</a><span class="divider">/</span></li>
+                    <li class="active">设置</li>
+                </ul>
+            </div>
+            <div class="inner">
+                <% if(errMsg.length){ %>
+                    <p class="alert alert-danger"><%= errMsg %></p>
+                <% } %>
+                <% if(sucMsg.length){ %> 
+                    <div class="alert alert-success">
+                        <%= sucMsg %>
+                    </div>
+
+                <% } %>
+                <form id="setting_form" class="form-horizontal" action="/user/setting" method="post" enctype="multipart/form-data">
+                    <div class="control-group">
+                        <label class="control-label" for="name">用户名</label>
+                        <div class="controls">
+                            <input class="input-xlarge readonly" id="name" name="uname" value="<%= user.uname %>" size="30" disabled value=" " type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="email">电子邮件</label>
+                        <div class="controls">
+                            <input class="input-xlarge" id="email" name="email" size="30" value=" <%= user.email %>" type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="userpic">用户头像</label>
+                        <div class="controls">
+                            <input class="input-xlarge" id="userpic" name="upic" size="30" type="file">
+                        </div>
+                    </div>
+                   
+                    <div class="control-group">
+                        <label class="control-label" for="weibo">金币</label>
+                        <div class="controls">
+                            <input class="input-xlarge" disabled id="weibo" name="gold" size="30" value=" <%= user.gold %>" type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="signature">个性签名</label>
+                        <div class="controls">
+                            <textarea class="input-xlarge" id="signature" name="des" size="30"><%= user.des %> </textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <input class="span-primary submit_btn" data-loading-text="保存中.." value="保存设置" type="submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="header">
+              <span class="col_fade">更改密码</span>
+            </div>
+            <div class="inner">
+                <% if(errMsgt.length){ %>
+                    <p class="alert alert-danger"><%= errMsgt %></p>
+                <% } %>
+                <% if(suMsg.length){ %> 
+                    <div class="alert alert-success">
+                        <%= suMsg %>
+                        <a href="/user/logout" class="info">退出</a>
+                    </div>
+
+                <% } %>
+                <form id="change_pass_form" class="form-horizontal" action="/user/settingpwd" method="post">
+                    <div class="control-group">
+                        <label class="control-label" for="old_pass">请输入原密码</label>
+
+                        <div class="controls">
+                            <input class="input-xlarge" required id="old_pass" name="old_pwd" size="30" type="password">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="new_pwd">请输入新密码</label>
+
+                        <div class="controls">
+                            <input class="input-xlarge" required id="new_pwd" name="new_pwd" size="30" type="password">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="req_pwd">请确认新密码</label>
+
+                        <div class="controls">
+                            <input class="input-xlarge" required id="req_pwd" name="req_pwd" size="30" type="password">
+                        </div>
+                    </div>
+                    <input id="action" name="action" value="change_password" type="hidden">
+                    <input name="_csrf" value="7zRmRFar-Oj4cVPDmqBCxCgIEp0hL4o2L5eU" type="hidden">
+
+                    <div class="form-actions">
+                      <input class="span-primary submit_btn" data-loading-text="更改中.." value="更改密码" type="submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="header">
+                <span class="col_fade">Access Token</span>
+            </div>
+            <div class="inner">
+                <div>
+                    <span>字符串：</span>ed5ccfe2-8018-4381-8ff2-f5493f27c062
+                </div>
+                <div>
+                    <span>二维码：</span>
+                    <span id="access-token-qrcode" title="ed5ccfe2-8018-4381-8ff2-f5493f27c062"><canvas width="200" height="200" style="display: none;"></canvas><img alt="Scan me!" style="display: block;" src="data:image/png;base64,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"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+
+
+<!-- 公共底部部分 -->
+<% include footer %>

@@ -1,0 +1,387 @@
+<!-- 引入公共头部 -->
+<% include header %>
+
+<div id="main">
+    <!-- 右侧发表的用户 -->
+    <div id="sidebar">
+        <div class="panel">
+            <div class="header">
+              <span class="col_fade">作者</span>
+            </div>
+            <div class="inner">
+                <div class="user_card">
+                    <div>
+                        <a class="user_avatar" href="/user/zbinlin">
+                            <!-- 输出用户头像 -->
+                            <% if(topicData.user.upic){ %> 
+                                <img src="/uploads/<%= topicData.user.upic %>" title="souying">
+                            <% }else{ %> 
+                                <img src="/uploads/default.png" title="xdlnode">
+                            <% } %>
+                        </a>
+                        <span class="user_name"><a class="dark" href="/user/zbinlin"><%= topicData.user.uname %></a></span>
+
+                        <div class="board clearfix">
+                          <div class="floor">
+                            <span class="big">积分: <%= topicData.user.gold %> </span>
+                          </div>
+                        </div>
+                        <div class="space clearfix"></div>
+                        <span class="signature">
+                             “
+                            
+                               <%= topicData.user.des||'这个家伙很懒，什么都没有留下....' %>
+                            
+                            ”
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      
+        <!-- 下面的广告 -->
+        <div class="panel">
+            <div class="inner ads">
+                <a href="http://www.ucloud.cn/site/seo.html?utm_source=zanzhu&amp;utm_campaign=cnodejs&amp;utm_medium=display&amp;utm_content=shengji&amp;ytag=cnodejs_display" target="_blank" class="banner sponsor_outlink" data-label="ucloud-banner">
+                    <img src="//dn-cnode.qbox.me/Fk7rRGVgB0XWgKjlpJs72VJty9Eu">
+                </a>
+                <div class="sep10"></div>
+                <a href="https://alinode.aliyun.com/?ref=cnode" target="_blank" class="banner sponsor_outlink" data-label="alinode">
+                    <img src="//dn-cnode.qbox.me/Fn4D6BhOTz1IswvmzeZ1q7QW1ls_">
+                </a>
+            
+            </div>
+        </div>
+
+     
+        <!-- 作者的其他话题 -->
+        <div class="panel">
+            <div class="header">
+              <span class="col_fade">作者其它话题</span>
+            </div>
+            <div class="inner">
+                <ul class="unstyled">
+                    <li>
+                        <div>
+                            <a class="dark topic_title" href="/topic/5847bcd14c17b38d3543644e" title="写了一个多窗口（或标签页）共享网页里 sessionStorage 的数据的插件，求测试下各浏览器的兼容性">写了一个多窗口（或标签页）共享网页里 sessionStorage 的数据的插件，求测试下各浏览器的兼容性</a>
+                        </div>
+                    </li>
+                </ul>
+              
+            </div>
+        </div>
+
+    
+        <!-- 无人回复的话题 -->
+        <div class="panel">
+            <div class="header">
+              <span class="col_fade">无人回复的话题</span>
+            </div>
+            <div class="inner">
+                <ul class="unstyled">
+                    <% noData.forEach(function(noData){ %> 
+                        <li>
+                            <div>
+                                <a class="dark topic_title" title="<%= noData.tName %>" href="/topic/<%= noData._id %>"><%= noData.tName %></a>
+                            </div>
+                        </li>
+                    <% }) %>
+                </ul>
+          
+            </div>
+        </div>
+        <div class="panel">
+            <div class="header">
+                <span class="col_fade">积分榜</span>
+                <a class="dark" href="/users/top100">TOP 100 >></a>
+            </div>
+            <div class="inner">
+                <ol>
+                    <%  userData.forEach(function(user){ %> 
+                        <li>
+                            <span class="top_score"><%= user.gold %></span>
+                            <span class="user_name">
+                            <a href="/user/i5ting"><%= user.uname %></a>
+                            </span>
+                        </li>
+                    <% }) %>
+                        
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 以下是话题部分 -->
+    <div id="content">
+        <% if(errMsg.length){ %>
+            <script>
+                alert('<%= errMsg %>');
+            </script>
+        <% } %>
+        <div class="panel">
+            <div class="header topic_header">
+                <span class="topic_full_title">
+                    <%= topicData.tName %> 
+                </span>
+                <div class="changes">
+                    <span>
+                        发布于 <% var timeValue = new Date() - topicData.createTime;
+                            // console.log(timeValue);
+                            var timeAgo;
+                            // console.log(timeAgo);
+                            if(Math.floor(timeValue%1000)){
+                                timeAgo = '刚刚';
+                            }
+                            if(Math.floor(timeValue/1000%60)){
+                                timeAgo = Math.floor(timeValue/1000%60)+'秒前';
+                            }
+                            if(Math.floor(timeValue/1000/60%60)){
+                                timeAgo = Math.floor(timeValue/1000/60%60)+'分钟前';
+                            }
+                            if(Math.floor(timeValue/1000/60/60%24)){
+                                timeAgo = Math.floor(timeValue/1000/60/60%24)+'小时前';
+                            }
+                            if(Math.floor(timeValue/1000/60/60/24)){
+                                timeAgo = Math.floor(timeValue/1000/60/60/24)+'天前';
+                            }
+                        %>
+                        <%=timeAgo %>
+                    </span>
+                    <span>
+                        作者 <a href="/user/pangguoming"><%= topicData.user.uname  %></a>
+                    </span>
+                    <span>
+                        <%= topicData.visitNum %> 次浏览
+                    </span>
+                    <span> 来自 <%= topicData.cid.cateName %></span>
+                        <% if(user){ %> 
+                            <a href="/topic/Delet/<%= topicData._id %>">
+                               <span class="span-success">删除</span>
+                            </a>
+                            <% if(topicData.like.indexOf(user._id)==-1){ %> 
+                                <span class="span-common span-success pull-right collect_btn shoucang" title="收藏" id="<%= topicData._id %>">收藏</span>
+                            <% }else{  %>  
+                                <span class="span-common span-success pull-right collect_btn shoucang" title="收藏" id="<%= topicData._id %>">取消收藏</span>
+                            <%} %>
+                           
+                        <% } %>
+                        
+                        <!-- <input class="" type="submit" value="收藏" action="collect"> -->
+                  
+                    
+                </div>
+                <div id="manage_topic"></div>
+            </div>
+
+            <div class="inner topic">
+
+                <div class="topic_content">
+                    <div class="markdown-text">
+                        <% if(topicData.isBuy==0 || topicData.user==uData){%> 
+                            <p><%= topicData.tContent %></p>
+                        <%}else{ %>
+                            <p>此贴为购买贴，需花费金币十个，请点击购买</p>
+                            
+                            <a href="/topic/Buy/<%= topicData._id %>">
+                               <span class="span-success">购买</span>
+                            </a>
+                        <% } %>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 评论 -->
+        <% if(replyData.length){ %> 
+        <div class="panel">
+            <div class="header">
+                <span class="col_fade"><%= replyData.length %> 回复</span>
+            </div>
+
+           <!-- 第一条评论 -->
+            <% replyData.forEach(function(reply){ %>
+                <% if(reply.isPing==1){ %> 
+                    <div class="cell reply_area reply_item
+                            " id="reply1" reply_id="585dfcda51aa32885d4f0fee" reply_to_id="">
+                        <div class="author_content">
+                            <a href="/user/solarhell" class="user_avatar">
+                                <!-- 输出用户头像 -->
+                                <% if(reply.user.upic){ %> 
+                                    <img src="/uploads/<%= reply.user.upic %>" title="souying">
+                                <% }else{ %> 
+                                    <img src="/uploads/default.png" title="xdlnode">
+                                <% } %>
+                            </a>
+                            <div class="user_info">
+                                <a class="dark reply_author" href="/user/solarhell"><%= reply.user.uname %></a>
+                               
+                                    <a class="reply_time" href="#585dfcda51aa32885d4f0fee"><%= reply.floorNum %>楼•
+                                        <% 
+                                            var timeValue = new Date() - reply.createTime;
+                                            // console.log(timeValue);
+                                            var timeAgo;
+                                            // console.log(timeAgo);
+                                            if(Math.floor(timeValue%1000)){
+                                                timeAgo = '刚刚';
+                                            }
+                                            if(Math.floor(timeValue/1000%60)){
+                                                timeAgo = Math.floor(timeValue/1000%60)+'秒前';
+                                            }
+                                            if(Math.floor(timeValue/1000/60%60)){
+                                                timeAgo = Math.floor(timeValue/1000/60%60)+'分钟前';
+                                            }
+                                            if(Math.floor(timeValue/1000/60/60%24)){
+                                                timeAgo = Math.floor(timeValue/1000/60/60%24)+'小时前';
+                                            }
+                                            if(Math.floor(timeValue/1000/60/60/24)){
+                                                timeAgo = Math.floor(timeValue/1000/60/60/24)+'天前';
+                                            }
+                                        %>
+                                        <%=timeAgo %>
+                                </a>
+                                
+                            </div>
+                            <div class="user_action">
+                                <span>
+                                    <span class="glyphicon glyphicon-thumbs-up" title="喜欢" id="<%= reply._id %>"></span>
+                                    <span class="up-count">
+                                        <%= reply.likePerson.length||'' %>
+                                    </span>
+                                </span>
+                              
+                                <span> 
+                                    <i class="fa fa-reply reply2_btn" title="回复"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="reply_content from-solarhell">
+                            <div class="markdown-text">
+                                <%= reply.rContent %>
+                            </div>
+                            <% if(user){ %> 
+                                <a href="/topic/replyDelet/<%= reply._id %>">
+                                   <span class="span-success">删除</span>
+                                </a>
+                                
+                               
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %> 
+                  
+            <%}) %>
+                
+        </div>
+        <% } %>
+        
+
+        <!-- 回复 -->
+        <% if(user){ %> 
+            <div class="panel">
+                <div class="header">
+                    <ol class="breadcrumb">
+                        <li>添加回复</li>
+                    </ol>
+                </div>
+                <div class="inner post">
+                     
+                    <form id="create_topic_form" action="/topic/reply/<%= topicData._id %>" method="post">
+                        <fieldset>
+                            <div class="markdown_editor in_editor">
+                                <textarea class="span11" rows="10"  name="rContent" placeholder="请输入内容"></textarea>
+                                <div class="editor_buttons">
+                                    <input class="span-primary submit_btn" data-loading-text="提交中" value="回复" type="submit">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        <% } %>
+            
+    </div>
+       
+</div>
+
+
+
+<!-- 引入公共的底部 -->
+<% include footer %>
+
+<script>
+    $('.glyphicon-thumbs-up').click(function(){
+        // alert(111);
+        // 获取当前点赞按钮对应的回复的_id的值
+        // alert($(this).attr('id'));
+        var id = $(this).attr('id');
+
+        // 获取要输入点赞数量的up-count
+        // console.log($(this).next());
+        var count = $(this).next();
+        var newNum = count.html();
+        // console.log(newNum);
+
+        // 发送ajax
+        $.get('/topic/reply/like/'+id,function(msg){
+            // alert(msg);
+            // console.log(msg);
+            if(msg=='nologin'){
+                // 弹框提示
+                alert('呵呵，你还没有登录呢......');
+
+                // 跳转
+                window.location.href = '/user/login';
+            }else{
+                // 判断返回的是什么
+                if(newNum==''){
+                    newNum = 0;
+                }
+
+                // + 在现有的数量上+1
+                if(msg=='+'){
+                    newNum++;
+                }else if(msg=='-'){
+                    // - 在现有的数量上-1
+                    newNum--;
+                }
+
+                // 如果newNum<=0,将newNum重置为空
+                if(newNum<=0){
+                    newNum='';
+                }
+
+                // 赋值
+                count.html(newNum);
+            }
+        })
+    })
+    $('.shoucang').click(function(){     
+        var id = $(this).attr('id');
+        // alert(qqqqqqq)
+        //alert(id);
+        // 发送ajax
+        $.get('/topic/shoucang/'+id,function(msg){
+            // alert(msg);
+            console.log(msg);
+            if(msg=='nologin'){
+                // 弹框提示
+                alert('呵呵，你还没有登录呢......');
+
+                // 跳转
+                window.location.href = '/user/login';
+            }else{
+                // 判断返回的是什么
+                if(msg=='you'){
+                    $('.shoucang').html('取消收藏');
+                }
+
+                // + 在现有的数量上+1
+                if(msg=='meiyou'){
+                    $('.shoucang').html('收藏');
+                }
+            }
+        })
+    })
+</script>

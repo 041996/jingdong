@@ -1,0 +1,83 @@
+<!-- 加载头部 -->
+<% include header %>
+
+<div id="main">
+    <div id="content">      
+        <div class="panel">
+            <div class="header">
+              <span class="col_fade">更改密码</span>
+            </div>
+            <div class="inner">
+                <% if(errMsgt.length){ %>
+                    <p class="alert alert-danger"><%= errMsgt %></p>
+                <% } %>
+                <% if(suMsg.length){ %> 
+                    <div class="alert alert-success">
+                        <%= suMsg %>
+                        <a href="/user/login" class="info">退出</a>
+                    </div>
+
+                <% } %>
+                <form id="change_pass_form" class="form-horizontal" action="/user/search" method="post">
+                <div class="control-group">
+                        <label class="control-label" for="old_pass">请输入用户名</label>
+
+                        <div class="controls">
+                            <input class="input-xlarge" required id="old_pass" name="uname" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="old_pass">请输入手机号</label>
+
+                        <div class="controls">
+                            <input class="input-xlarge" required id="old_pass" name="phoneNumber" size="30" type="text">
+                            <input class="btn ma" id="old_pass" name="sendma" size="30" type="submit" value="发送验证码">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="old_pass">请输入验证码</label>
+
+                        <div class="controls">
+                            <input class="input-xlarge" required id="old_pass" name="ma" size="30" type="text">
+                           
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="new_pwd">请输入新密码</label>
+
+                        <div class="controls">
+                            <input class="input-xlarge" required id="new_pwd" name="new_pwd" size="30" type="password">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="req_pwd">请确认新密码</label>
+
+                        <div class="controls">
+                            <input class="input-xlarge" required id="req_pwd" name="req_pwd" size="30" type="password">
+                        </div>
+                    </div>
+                    <input id="action" name="action" value="change_password" type="hidden">
+                    <input name="_csrf" value="7zRmRFar-Oj4cVPDmqBCxCgIEp0hL4o2L5eU" type="hidden">
+
+                    <div class="form-actions">
+                      <input class="span-primary submit_btn" data-loading-text="更改中.." value="更改密码" type="submit">
+                    </div>
+                </form>
+            </div>
+        </div>      
+    </div>
+</div>
+<!-- 公共底部部分 -->
+<% include footer %>
+<script>
+    $('.ma').click(function(){
+        var phone = $('input[name=phoneNumber]').val();
+        console.log($('input[name=phoneNumber]').val());
+        $.get('/user/sendma/'+phone,function(msg){
+            if(msg=='ok'){
+                $('.ma').val("发送完成");
+                // alert('发送完成');
+            }
+        })
+    })
+</script>
